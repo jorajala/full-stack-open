@@ -8,6 +8,7 @@ const Person = ({ person }) => {
 
 const Persons = (props) => {
   let persons = props.persons;
+  console.log("persons component:", persons);
   let filter = props.filter;
   return (
     <>
