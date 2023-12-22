@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import PersonList from "./components/PersonList";
-import personService from "./services/Persons";
+import personsService from "./services/Persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -12,7 +12,7 @@ const App = () => {
 
   useEffect(() => {
     console.log("effect");
-    personService.getAll().then((initialPersons) => {
+    personsService.getAll().then((initialPersons) => {
       setPersons(initialPersons);
     });
   }, []);
@@ -28,12 +28,24 @@ const App = () => {
       name: newName,
       number: newNumber,
     };
-    personService.create(newPerson).then((returnedPerson) => {
+    personsService.create(newPerson).then((returnedPerson) => {
       console.log("create response", returnedPerson);
       setPersons(persons.concat(returnedPerson));
       setNewName("");
       setNewNumber("");
     });
+  };
+
+  const deletePerson = (person) => {
+    console.log("deletePerson", person);
+    if (window.confirm(`Are you sure you want to delete ${name}`)) {
+      personsService.remove(person.id).then((response) => {
+        console.log("delete response", response);
+        setPersons(
+          persons.filter((savedPerson) => savedPerson.id !== person.id)
+        );
+      });
+    }
   };
 
   const handlePersonChange = (event) => {
@@ -62,7 +74,11 @@ const App = () => {
       />
       <h3>Numbers</h3>
 
-      <PersonList persons={persons} filter={newFilter} />
+      <PersonList
+        persons={persons}
+        filter={newFilter}
+        clickHandler={deletePerson}
+      />
     </div>
   );
 };
