@@ -1,6 +1,6 @@
 import Person from "./Person";
 
-const Persons = (props) => {
+const PersonList = (props) => {
   let persons = props.persons;
   let filter = props.filter;
   return (
@@ -18,4 +18,4 @@ const Persons = (props) => {
   );
 };
 
-export default Persons;
+export default PersonList;
