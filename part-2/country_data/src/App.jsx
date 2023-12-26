@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Filter from "./components/Filter";
-import Country from "./components/Country";
+import CountryView from "./components/CountryView";
 
 function App() {
   const [newFilter, setNewFilter] = useState("");
@@ -27,11 +27,20 @@ function App() {
     );
   };
 
+  const handleShowClick = (event) => {
+    let countryName = event.target.attributes.data.value;
+    setNewFilter(countryName);
+    setFilterResult(
+      countryData.filter((country) => country.name.common === countryName)
+    );
+  };
+
   return (
     <div>
       find countries
       <Filter filter={newFilter} handler={handleFilterChange} />
-      <Country countries={filterResult} />
+      <br />
+      <CountryView countries={filterResult} showHandler={handleShowClick} />
     </div>
   );
 }
