@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import PersonList from "./components/PersonList";
+import Notification from "./components/Notification";
 import personsService from "./services/Persons";
 
 const App = () => {
@@ -9,6 +10,10 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
+  const [notificationData, setNotificationData] = useState({
+    message: null,
+    isError: false,
+  });
 
   useEffect(() => {
     console.log("effect");
@@ -52,23 +57,39 @@ const App = () => {
       number: newNumber,
     };
     personsService.create(newPerson).then((returnedPerson) => {
-      console.log("create response", returnedPerson);
       setPersons(persons.concat(returnedPerson));
       setNewName("");
       setNewNumber("");
+      showNotification(`Created "${newName}"`, false);
     });
   };
 
   const deletePerson = (person) => {
     console.log("deletePerson", person);
     if (window.confirm(`Are you sure you want to delete ${name}`)) {
-      personsService.remove(person.id).then((response) => {
-        console.log("delete response", response);
-        setPersons(
-          persons.filter((savedPerson) => savedPerson.id !== person.id)
-        );
-      });
+      personsService
+        .remove(person.id)
+        .then((response) => {
+          console.log("delete response", response);
+          setPersons(
+            persons.filter((savedPerson) => savedPerson.id !== person.id)
+          );
+        })
+        .catch(() => {
+          showNotification(
+            `"${person.name}" has already been removed from server`,
+            true
+          );
+          setPersons(persons.filter((p) => p.id !== person.id));
+        });
     }
+  };
+
+  const showNotification = (message, isError) => {
+    setNotificationData({ message, isError });
+    setTimeout(() => {
+      setNotificationData({ message: null, isError: null });
+    }, 3000);
   };
 
   const handlePersonChange = (event) => {
@@ -86,6 +107,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification data={notificationData} />
       <Filter filter={newFilter} handler={handleFilterChange} />
       <h3>Add new</h3>
       <PersonForm
