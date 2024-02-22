@@ -27,6 +27,13 @@ app.get("/api/persons/:id", (request, response) => {
   }
 });
 
+app.delete("/api/persons/:id", (request, response) => {
+  let id = Number(request.params.id);
+  persons = persons.filter((person) => person.id !== id);
+
+  response.status(204).end();
+});
+
 app.get("/api/info", (request, response) => {
   let stats = `<p>Phonebook has info for ${persons.length} people </p>`;
   let timestamp = `<p>${new Date()}</p>`;
