@@ -68,6 +68,17 @@ app.delete("/api/persons/:id", (request, response, next) => {
     .catch((error) => next(error));
 });
 
+app.put("/api/persons/:id", (request, response, next) => {
+  let filter = { name: request.body.name };
+  let update = { number: request.body.number };
+
+  Person.findOneAndUpdate(filter, update, { new: true })
+    .then((result) => {
+      response.status(200).json(result);
+    })
+    .catch((error) => next(error));
+});
+
 app.post("/api/persons", (request, response) => {
   let body = request.body;
 
