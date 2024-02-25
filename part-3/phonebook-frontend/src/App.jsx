@@ -61,6 +61,9 @@ const App = () => {
       setNewName("");
       setNewNumber("");
       showNotification(`Created "${newName}"`, false);
+    }).catch(error => {
+      console.log(error.response.data);
+      showNotification(error.response.data.error, true);
     });
   };
 
