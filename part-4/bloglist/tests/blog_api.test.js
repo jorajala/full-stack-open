@@ -111,6 +111,25 @@ test("delete blog", async () => {
   await api.get(API.concat(id)).expect(404);
 });
 
+test("update existing blog", async () => {
+  let updateMe = {
+    title: "update me",
+    author: "the og",
+    url: "",
+    likes: 666,
+  };
+  let postResponse = await api.post(API).send(updateMe).expect(201);
+  let updated = updateMe;
+  updated.likes = 0;
+
+  let putResponse = await api
+    .put(API.concat("", postResponse.body.id))
+    .send(updated)
+    .expect(200);
+
+  assert.strictEqual(updated.likes, putResponse.body.likes);
+});
+
 after(async () => {
   await mongoose.connection.close();
 });
