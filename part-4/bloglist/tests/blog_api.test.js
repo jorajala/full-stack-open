@@ -51,12 +51,12 @@ test("there are 3 blogs", async () => {
   assert.strictEqual(response.body.length, testBlogs.length);
 });
 
-test("blog id field", async () => {
+test("blog has a field named id", async () => {
   let response = await api.get(API).expect(200);
   assert(response.body[0].id);
 });
 
-test("blog can be added", async () => {
+test("new blog can be added", async () => {
   await api.post(API).send(testBlogs[0]).expect(201);
 
   let response = await api.get(API);
@@ -94,6 +94,21 @@ test("missing title or url returns 400", async () => {
 
   await api.post(API).send(missingTitle).expect(400);
   await api.post(API).send(missingUrl).expect(400);
+});
+
+test("delete blog", async () => {
+  let deleteMe = {
+    title: "delete me pls",
+    author: "delete tester",
+    url: "",
+    likes: 1,
+  };
+
+  let postResponse = await api.post(API).send(deleteMe).expect(201);
+  let id = postResponse.body.id;
+
+  await api.delete(API.concat(id)).send(id).expect(204);
+  await api.get(API.concat(id)).expect(404);
 });
 
 after(async () => {
