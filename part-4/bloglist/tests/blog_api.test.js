@@ -44,25 +44,94 @@ describe("when there is initially one user at db", () => {
     const usernames = usersAtEnd.map((u) => u.username);
     assert(usernames.includes(newUser.username));
   });
-  test("creation fails with proper statuscode and message if username already taken", async () => {
-    const usersAtStart = await helper.usersInDb();
 
-    const newUser = {
-      username: "root",
-      name: "Superuser",
-      password: "salainen",
-    };
+  describe("creation fails with proper statuscode and message if", () => {
+    test("username already taken", async () => {
+      const usersAtStart = await helper.usersInDb();
 
-    const result = await api
-      .post(USERS)
-      .send(newUser)
-      .expect(400)
-      .expect("Content-Type", /application\/json/);
+      const newUser = {
+        username: "root",
+        name: "Superuser",
+        password: "salainen",
+      };
 
-    const usersAtEnd = await helper.usersInDb();
-    assert(result.body.error.includes("expected `username` to be unique"));
+      const result = await api
+        .post(USERS)
+        .send(newUser)
+        .expect(400)
+        .expect("Content-Type", /application\/json/);
 
-    assert.strictEqual(usersAtEnd.length, usersAtStart.length);
+      const usersAtEnd = await helper.usersInDb();
+      assert(result.body.error.includes("expected `username` to be unique"));
+
+      assert.strictEqual(usersAtEnd.length, usersAtStart.length);
+    });
+    test("username is undefined or less than 3 characters", async () => {
+      const usersAtStart = await helper.usersInDb();
+      let shortUser = {
+        username: "pp",
+        name: "Pekka Pätkä",
+        password: "salaisuus",
+      };
+      let noNameUser = {
+        name: "Mysteeri",
+        password: "salaisuus",
+      };
+      let shortResult = await api
+        .post(USERS)
+        .send(shortUser)
+        .expect(400)
+        .expect("Content-Type", /application\/json/);
+
+      let noNameResult = await api
+        .post(USERS)
+        .send(noNameUser)
+        .expect(400)
+        .expect("Content-Type", /application\/json/);
+
+      assert(
+        shortResult.body.error.includes(
+          "username must be at least 3 characters"
+        )
+      );
+      assert(noNameResult.body.error.includes("username missing"));
+
+      let usersAtEnd = await helper.usersInDb();
+      assert.strictEqual(usersAtEnd.length, usersAtStart.length);
+    });
+    test("username is undefined or less than 3 characters", async () => {
+      const usersAtStart = await helper.usersInDb();
+      let shortUser = {
+        username: "pekkap",
+        name: "Pekka Pätkä",
+        password: "on",
+      };
+      let noPassUser = {
+        username: "pekkap",
+        name: "Mysteeri",
+      };
+      let shortResult = await api
+        .post(USERS)
+        .send(shortUser)
+        .expect(400)
+        .expect("Content-Type", /application\/json/);
+
+      let noPassResult = await api
+        .post(USERS)
+        .send(noPassUser)
+        .expect(400)
+        .expect("Content-Type", /application\/json/);
+
+      assert(
+        shortResult.body.error.includes(
+          "password must be at least 3 characters"
+        )
+      );
+      assert(noPassResult.body.error.includes("password missing"));
+
+      let usersAtEnd = await helper.usersInDb();
+      assert.strictEqual(usersAtEnd.length, usersAtStart.length);
+    });
   });
 });
 
