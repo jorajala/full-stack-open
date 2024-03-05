@@ -25,6 +25,7 @@ blogsRouter.get("/:id", async (request, response, next) => {
 });
 
 blogsRouter.post("/", async (request, response) => {
+  console.log(request.headers);
   const body = request.body;
 
   if (!Object.hasOwn(body, "title") || !Object.hasOwn(body, "url")) {
@@ -37,7 +38,6 @@ blogsRouter.post("/", async (request, response) => {
   }
 
   let user = await User.findById(decodedToken.id);
-  console.log(user);
 
   const blog = new Blog({
     title: body.title,
@@ -55,8 +55,18 @@ blogsRouter.post("/", async (request, response) => {
 });
 
 blogsRouter.delete("/:id", async (request, response) => {
-  await Blog.findByIdAndDelete(request.params.id);
-  response.status(204).end();
+  const decodedToken = jwt.verify(request.token, process.env.SECRET);
+  if (!decodedToken) {
+    return response.status(404).json({ error: "invalid token" });
+  }
+
+  let user = await User.findById(decodedToken.id);
+  let blog = await Blog.findById(request.params.id);
+
+  if (blog.user.toString() === user.id.toString()) {
+    await Blog.findByIdAndDelete(request.params.id);
+    response.status(204).end();
+  }
 });
 
 blogsRouter.put("/:id", async (request, response, next) => {

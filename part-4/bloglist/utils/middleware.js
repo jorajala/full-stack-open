@@ -35,7 +35,7 @@ const errorHandler = (error, request, response, next) => {
 };
 
 const tokenExtractor = (request, response, next) => {
-  if (request.method === "POST") {
+  if (request.method === "POST" || request.method === "DELETE") {
     console.log("POST");
     const authorization = request.get("authorization");
     if (authorization && authorization.startsWith("Bearer ")) {
