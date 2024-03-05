@@ -34,8 +34,21 @@ const errorHandler = (error, request, response, next) => {
   next(error);
 };
 
+const tokenExtractor = (request, response, next) => {
+  if (request.method === "POST") {
+    console.log("POST");
+    const authorization = request.get("authorization");
+    if (authorization && authorization.startsWith("Bearer ")) {
+      request.token = authorization.replace("Bearer ", "");
+      console.log(request.token);
+    }
+  }
+  next();
+};
+
 module.exports = {
   requestLogger,
   unknownEndpoint,
   errorHandler,
+  tokenExtractor,
 };
