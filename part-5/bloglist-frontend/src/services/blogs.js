@@ -18,7 +18,7 @@ const create = async (newObject) => {
 };
 
 const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl} /${id}`, newObject);
+  const request = axios.put(`${baseUrl}/${id}`, newObject);
   return request.then((response) => response.data);
 };
 
@@ -27,4 +27,13 @@ const getAll = () => {
   return request.then((response) => response.data);
 };
 
-export default { setToken, create, update, getAll };
+const remove = (id) => {
+  console.log("remove blog", `${baseUrl}/${id}`);
+  let config = {
+    headers: { Authorization: token },
+  };
+  const request = axios.delete(`${baseUrl}/${id}`, config);
+  return request.then((response) => response.data);
+};
+
+export default { setToken, create, update, getAll, remove };
