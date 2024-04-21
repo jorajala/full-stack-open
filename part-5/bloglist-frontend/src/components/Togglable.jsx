@@ -33,6 +33,8 @@ const Togglable = forwardRef(
   },
 );
 
+Togglable.displayName = "Togglable";
+
 Togglable.propTypes = {
   // @ts-ignore
   buttonLabel: PropTypes.string.isRequired,
