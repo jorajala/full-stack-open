@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Blog from "./components/Blog";
 import BlogForm from "./components/BlogForm";
 import Notification from "./components/Notification";
+import LoginForm from "./components/LoginForm";
+import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
@@ -100,33 +102,6 @@ const App = () => {
       });
   };
 
-  const loginForm = () => (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          username
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          ></input>
-        </div>
-        <div>
-          password
-          <input
-            type="text"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          ></input>
-        </div>
-        <button type="submit">login</button>
-      </form>
-    </div>
-  );
-
   const blogList = () => (
     <div>
       <h2>blogs</h2>
@@ -149,7 +124,16 @@ const App = () => {
     <div>
       <h1>Blogs</h1>
       <Notification data={notificationData} />
-      {!user && loginForm()}
+      <Togglable buttonLabel="login">
+        <LoginForm
+          username={username}
+          password={password}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          handleLogin={handleLogin}
+        />
+      </Togglable>
+
       {user && (
         <div>
           {userInfo()}
