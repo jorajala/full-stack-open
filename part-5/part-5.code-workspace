@@ -1,0 +1,14 @@
+{
+  "folders": [
+    {
+      "path": "bloglist-backend"
+    },
+    {
+      "path": "bloglist-frontend"
+    }
+    {
+      "path": "bloglist-e2e"
+    }
+
+  ]
+}
