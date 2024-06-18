@@ -11,6 +11,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   server: {
+    host: "127.0.0.1",
     proxy: {
       "/api": {
         target: "http://localhost:3003",
