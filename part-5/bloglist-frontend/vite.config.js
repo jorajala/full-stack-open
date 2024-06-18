@@ -18,6 +18,11 @@ export default defineConfig({
       },
     },
   },
+  test: {
+    environment: "jsdom",
+    globals: true,
+    setupFiles: "./testSetup.js",
+  },
   // resolve: {
   //   alias: [{ find: "@", replacement: resolve(__dirname, "src") }],
   // },

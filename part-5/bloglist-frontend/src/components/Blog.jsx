@@ -30,13 +30,13 @@ const Blog = ({ blog, addLike, removeBlog, loggedUser }) => {
   };
 
   return (
-    <div style={blogStyle}>
+    <div className="blog" style={blogStyle}>
       {blog.title} {blog.author}{" "}
       <button type="button" onClick={toggleDetails}>
         details
       </button>
       {showDetails && (
-        <div>
+        <div className="blog-details">
           <br /> {blog.url}
           <br /> likes: {blog.likes}{" "}
           <button type="button" onClick={handleLike}>
