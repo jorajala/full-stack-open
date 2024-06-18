@@ -65,22 +65,50 @@ describe("Bloglist ", function () {
 
     describe("When there is a blog", function () {
       beforeEach(function () {
-        cy.createBlog({ title: "Test blog", author: "Tester", url: "testurl" });
+        cy.createBlog({
+          title: "Test blog",
+          author: "Tester",
+          url: "testurl",
+          likes: 0,
+        });
       });
       it("It can be liked", function () {
         cy.get(".blog").eq(0).contains("details").click();
         cy.get(".blog-details").contains("like").click();
         cy.get(".blog-details").contains("likes: 1");
       });
+
       it("It can be deleted", function () {
         cy.get(".blog").eq(0).contains("details").click();
         cy.get(".blog-details").contains("remove").click();
         cy.get("html").should("not.contain", ".blog");
       });
+
       it("It can't be deleted by other users", function () {
         cy.login({ username: "tuser2", password: "asdf" });
         cy.get(".blog").eq(0).contains("details").click();
         cy.get(".blog-details").should("not.contain", "remove");
+      });
+    });
+
+    describe("When there are multiple blogs", function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: "The best blog",
+          author: "Handsome Devil",
+          url: "testurl",
+          likes: 666,
+        });
+        cy.createBlog({
+          title: "The not so great blog",
+          author: "Loser",
+          url: "testurl",
+          likes: 7,
+        });
+      });
+      it("Blog list is sorted by likes", function () {
+        cy.get(".blog").eq(0).should("contain", "The best blog");
+        cy.get(".blog").eq(1).should("contain", "The not so great blog");
       });
     });
   });
