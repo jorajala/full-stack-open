@@ -14,6 +14,7 @@ describe("Bloglist ", function () {
       password: "asdf",
     };
     cy.request("POST", "http://localhost:3003/api/users/", testUser);
+    cy.request("POST", "http://localhost:3003/api/users/", testUser2);
   });
 
   it("Login form is shown", function () {
@@ -66,10 +67,20 @@ describe("Bloglist ", function () {
       beforeEach(function () {
         cy.createBlog({ title: "Test blog", author: "Tester", url: "testurl" });
       });
-      it.only("It can be liked", function () {
+      it("It can be liked", function () {
         cy.get(".blog").eq(0).contains("details").click();
         cy.get(".blog-details").contains("like").click();
         cy.get(".blog-details").contains("likes: 1");
+      });
+      it("It can be deleted", function () {
+        cy.get(".blog").eq(0).contains("details").click();
+        cy.get(".blog-details").contains("remove").click();
+        cy.get("html").should("not.contain", ".blog");
+      });
+      it("It can't be deleted by other users", function () {
+        cy.login({ username: "tuser2", password: "asdf" });
+        cy.get(".blog").eq(0).contains("details").click();
+        cy.get(".blog-details").should("not.contain", "remove");
       });
     });
   });
