@@ -27,6 +27,7 @@ const anecdoteSlice = createSlice({
   reducers: {
     addAnecdote(state, action) {
       let content = action.payload;
+
       state.push({
         content,
         id: getId(),

@@ -12,6 +12,20 @@ const AnecdoteList = () => {
   const vote = (id) => {
     console.log("vote", id);
     dispatch(addVote(id));
+    let content = anecdotes.filter((a) => a.id === id).pop().content;
+
+    dispatch({
+      type: "notification/setNotification",
+      payload: `you upvoted: ${content}`,
+    });
+    setTimeout(
+      () =>
+        dispatch({
+          type: "notification/setNotification",
+          payload: null,
+        }),
+      5000,
+    );
   };
 
   return (
