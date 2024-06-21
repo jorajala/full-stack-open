@@ -7,6 +7,7 @@ import {
   useParams,
   useNavigate,
 } from "react-router-dom";
+import { useField } from "./hooks/index.js";
 
 const AnecdoteList = ({ anecdotes }) => (
   <div>
@@ -91,25 +92,32 @@ const Notification = (notification) => {
 };
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState("");
-  const [author, setAuthor] = useState("");
-  const [info, setInfo] = useState("");
+  const content = useField({ type: "text", name: "content" });
+  const author = useField({ type: "text", name: "author" });
+  const info = useField({ type: "text", name: "info" });
 
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("handlesubmit", e.target);
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0,
     });
-    props.setNotification(`new anecdote created: ${content}`);
+    props.setNotification(`new anecdote created: ${content.value}`);
     setTimeout(() => {
       props.setNotification("");
     }, 5000);
     navigate("/");
+  };
+
+  const handleReset = () => {
+    content.reset();
+    author.reset();
+    info.reset();
   };
 
   return (
@@ -118,29 +126,20 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+          <input {...content} />
         </div>
         <div>
           author
-          <input
-            name="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
+          <input {...author} />
         </div>
         <div>
           url for more info
-          <input
-            name="info"
-            value={info}
-            onChange={(e) => setInfo(e.target.value)}
-          />
+          <input {...info} />
         </div>
         <button>create</button>
+        <button type="button" onClick={handleReset}>
+          reset
+        </button>
       </form>
     </div>
   );
@@ -167,6 +166,7 @@ const App = () => {
   const [notification, setNotification] = useState("");
 
   const addNew = (anecdote) => {
+    console.log("addnew", anecdote);
     anecdote.id = Math.round(Math.random() * 10000);
     setAnecdotes(anecdotes.concat(anecdote));
   };
