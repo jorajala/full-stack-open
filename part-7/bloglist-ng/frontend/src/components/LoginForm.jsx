@@ -1,3 +1,5 @@
+import { Button, Input } from "../styled-components.js";
+
 const LoginForm = ({
   handleLogin,
   handleUsernameChange,
@@ -11,26 +13,26 @@ const LoginForm = ({
       <form onSubmit={handleLogin}>
         <div>
           username
-          <input
+          <Input
             id="username"
             value={username}
             name="Username"
             onChange={handleUsernameChange}
-          ></input>
+          ></Input>
         </div>
         <div>
           password
-          <input
+          <Input
             id="password"
             type="password"
             value={password}
             name="Password"
             onChange={handlePasswordChange}
-          ></input>
+          ></Input>
         </div>
-        <button id="login-button" type="submit">
+        <Button id="login-button" type="submit">
           login
-        </button>
+        </Button>
       </form>
     </div>
   );

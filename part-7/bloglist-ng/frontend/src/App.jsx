@@ -8,14 +8,20 @@ import blogService from "./services/blogs.js";
 import loginService from "./services/login.js";
 import { showNotification } from "./reducers/notificationReducer.js";
 import { initBlogs } from "./reducers/blogsReducer.js";
+import { initUsers } from "./reducers/usersReducer.js";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, Route, Routes } from "react-router-dom";
+import { Button, Header } from "./styled-components.js";
+import Users from "./components/Users.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     // @ts-ignore
-    blogService.getAll().then(() => dispatch(initBlogs()));
+    dispatch(initBlogs());
+    // @ts-ignore
+    dispatch(initUsers());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -64,7 +70,6 @@ const App = () => {
 
   const blogList = () => (
     <div>
-      <h2>blogs</h2>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} loggedUser={user} />
       ))}
@@ -74,36 +79,76 @@ const App = () => {
   const userInfo = () => (
     <p>
       {user.name} logged in
-      <button type="button" onClick={handleLogout}>
+      <Button type="button" onClick={handleLogout}>
         logout
-      </button>
+      </Button>
     </p>
   );
 
+  const MainView = () => {
+    return (
+      <div>
+        {user && <Header>Blogs</Header>}
+        <Notification />
+        {!user && <div></div>}
+
+        {user && (
+          <div>
+            {blogList()}
+            {/* @ts-ignore */}
+            <Togglable buttonLabel="create blog" ref={blogFormRef}>
+              <BlogForm />
+            </Togglable>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const padding = {
+    padding: 5,
+  };
+
+  console.log("user:", user);
   return (
     <div>
-      {user && <h2>Blogs</h2>}
-      <Notification />
-      {!user && (
-        <LoginForm
-          username={username}
-          password={password}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
-          handleLogin={handleLogin}
-        />
-      )}
+      <div>
+        <Link style={padding} to="/">
+          home
+        </Link>
+        <Link style={padding} to="/users">
+          users
+        </Link>
+        {user ? (
+          <em>
+            {user.name} logged in
+            <button type="button" onClick={handleLogout}>
+              logout
+            </button>
+          </em>
+        ) : (
+          <Link style={padding} to="/login">
+            login
+          </Link>
+        )}
+      </div>
 
-      {user && (
-        <div>
-          {userInfo()}
-          {/* @ts-ignore */}
-          <Togglable buttonLabel="create blog" ref={blogFormRef}>
-            <BlogForm />
-          </Togglable>
-          {blogList()}
-        </div>
-      )}
+      <Routes>
+        <Route path="/" element={<MainView />} />
+        <Route path="/users" element={<Users />} />
+        <Route
+          path="/login"
+          element={
+            <LoginForm
+              username={username}
+              password={password}
+              handleUsernameChange={({ target }) => setUsername(target.value)}
+              handlePasswordChange={({ target }) => setPassword(target.value)}
+              handleLogin={handleLogin}
+            />
+          }
+        />
+      </Routes>
     </div>
   );
 };

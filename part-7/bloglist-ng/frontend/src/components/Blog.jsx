@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addLike, removeBlog } from "../reducers/blogsReducer.js";
 import { showNotification } from "../reducers/notificationReducer.js";
+import { Button, DetailsDiv, BlogDiv } from "../styled-components.js";
 
 const Blog = ({ blog, loggedUser }) => {
   const blogStyle = {
@@ -44,27 +45,27 @@ const Blog = ({ blog, loggedUser }) => {
   };
 
   return (
-    <div className="blog" style={blogStyle}>
+    <BlogDiv className="blog" style={blogStyle}>
       {blog.title} {blog.author}{" "}
-      <button type="button" onClick={toggleDetails}>
+      <Button type="button" onClick={toggleDetails}>
         details
-      </button>
+      </Button>
       {showDetails && (
-        <div className="blog-details">
+        <DetailsDiv className="blog-details">
           <br /> {blog.url}
           <br /> likes: {blog.likes}{" "}
-          <button type="button" onClick={handleLike}>
+          <Button type="button" onClick={handleLike}>
             like
-          </button>
+          </Button>
           <br /> {blog.user.name}
           {allowRemove() && (
             <div>
-              <button onClick={() => handleRemove()}>remove</button>
+              <Button onClick={() => handleRemove()}>remove</Button>
             </div>
           )}
-        </div>
+        </DetailsDiv>
       )}
-    </div>
+    </BlogDiv>
   );
 };
 

@@ -1,6 +1,7 @@
 /* eslint-disable react/display-name */
 import { useState, forwardRef, useImperativeHandle } from "react";
 import PropTypes from "prop-types";
+import { Button } from "../styled-components.js";
 
 const Togglable = forwardRef(
   // @ts-ignore
@@ -23,10 +24,10 @@ const Togglable = forwardRef(
     return (
       <div>
         <div style={hideWhenVisible}>
-          <button onClick={toggleVisibility}>{buttonLabel}</button>
+          <Button onClick={toggleVisibility}>{buttonLabel}</Button>
         </div>
         <div style={showWhenVisible}>
-          {children} <button onClick={toggleVisibility}>cancel</button>
+          {children} <Button onClick={toggleVisibility}>cancel</Button>
         </div>
       </div>
     );
