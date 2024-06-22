@@ -7,23 +7,25 @@ import Togglable from "./components/Togglable.jsx";
 import blogService from "./services/blogs.js";
 import loginService from "./services/login.js";
 import { showNotification } from "./reducers/notificationReducer.js";
-import { useDispatch } from "react-redux";
+import { initBlogs } from "./reducers/blogsReducer.js";
+import { useDispatch, useSelector } from "react-redux";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // @ts-ignore
+    blogService.getAll().then(() => dispatch(initBlogs()));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
 
-  const dispatch = useDispatch();
-
+  // @ts-ignore
+  const blogs = useSelector((state) => state.blogs);
   const blogFormRef = useRef();
-
-  useEffect(() => {
-    blogService
-      .getAll()
-      .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)));
-  }, []);
 
   useEffect(() => {
     let loggedUserJSON = window.localStorage.getItem("loggedBloglistUser");
@@ -60,83 +62,11 @@ const App = () => {
     showNotification(`User ${user.name} logged out`, false);
   };
 
-  const createBlog = (blogObject) => {
-    blogService
-      .create(blogObject)
-      .then((returnedBlog) => {
-        setBlogs(blogs.concat(returnedBlog));
-
-        dispatch(
-          // @ts-ignore
-          showNotification(
-            `Added blog: "${returnedBlog.title}" by ${returnedBlog.author}`,
-            5,
-          ),
-        );
-        // dispatch(
-        //   showNotification(
-        //     `Added blog: "${returnedBlog.title}" by ${returnedBlog.author}`,
-        //     5,
-        //   ),
-        // );
-
-        // @ts-ignore
-        blogFormRef.current.toggleVisibility();
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  const removeBlog = (blog) => {
-    console.log("remove blog id", blog);
-
-    if (!window.confirm(`Remove blog "${blog.title}" by ${blog.author}`)) {
-      console.log("removeblog cancel");
-      return;
-    }
-    blogService
-      .remove(blog.id)
-      .then(() => {
-        blogService
-          .getAll()
-          .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)));
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  const addLike = (id) => {
-    let blog = blogs.find((b) => b.id === id);
-    console.log("addlike to", blog);
-    let newBlog = {
-      ...blog,
-      likes: blog.likes + 1,
-    };
-    blogService.update(blog.id, newBlog).then(() => {
-      blogService
-        .getAll()
-        .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)));
-    });
-
-    dispatch(
-      // @ts-ignore
-      showNotification(`Added like to: "${blog.title}"`, 2),
-    );
-  };
-
   const blogList = () => (
     <div>
       <h2>blogs</h2>
       {blogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          addLike={addLike}
-          removeBlog={removeBlog}
-          loggedUser={user}
-        />
+        <Blog key={blog.id} blog={blog} loggedUser={user} />
       ))}
     </div>
   );
@@ -169,7 +99,7 @@ const App = () => {
           {userInfo()}
           {/* @ts-ignore */}
           <Togglable buttonLabel="create blog" ref={blogFormRef}>
-            <BlogForm createBlog={createBlog} />
+            <BlogForm />
           </Togglable>
           {blogList()}
         </div>

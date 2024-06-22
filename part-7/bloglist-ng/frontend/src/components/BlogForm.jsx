@@ -1,6 +1,11 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addBlog } from "../reducers/blogsReducer.js";
+import { showNotification } from "../reducers/notificationReducer.js";
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm = () => {
+  const dispatch = useDispatch();
+
   const [newTitle, setNewTitle] = useState("");
   const [newAuthor, setnewAuthor] = useState("");
   const [newUrl, setNewUrl] = useState("");
@@ -15,13 +20,17 @@ const BlogForm = ({ createBlog }) => {
     setNewUrl(event.target.value);
   };
 
-  const addBlog = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    createBlog({ title: newTitle, author: newAuthor, url: newUrl });
+    console.log("addBlog", event);
+    // @ts-ignore
+    dispatch(addBlog({ title: newTitle, author: newAuthor, url: newUrl }));
+    // @ts-ignore
+    dispatch(showNotification(`Added blog: "${newTitle}" by ${newAuthor}`, 5));
   };
 
   return (
-    <form onSubmit={addBlog}>
+    <form onSubmit={handleSubmit}>
       <div>
         title:{" "}
         <input id="addblog-title" value={newTitle} onChange={titleHandler} />{" "}

@@ -36,4 +36,13 @@ const remove = (id) => {
   return request.then((response) => response.data);
 };
 
-export default { setToken, create, update, getAll, remove };
+const addLike = async (id) => {
+  let targetUrl = `${baseUrl}/${id}`;
+  let get_response = await axios.get(targetUrl);
+  let blog = get_response.data;
+  let upvotedBlog = { ...blog, likes: blog.likes + 1 };
+  let put_response = await axios.put(targetUrl, upvotedBlog);
+  return put_response.data;
+};
+
+export default { setToken, create, update, getAll, remove, addLike };
