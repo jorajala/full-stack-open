@@ -1,0 +1,24 @@
+meta {
+  name: create
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/api/blogs
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InR0dW5rIiwiaWQiOiI2Njc4OGFiMmQ1ODhmOWIzY2FmNDNlNWUiLCJpYXQiOjE3MTkxNzU5NDZ9.R3TBEaCDzEv6KgvL-j4txHeKCeJDmi7r_i9FuZ2syCk
+}
+
+body:json {
+  {
+    "title": "testi",
+    "author": "juuh elikkäs",
+    "url": "urlihanC"
+  }
+  
+}
