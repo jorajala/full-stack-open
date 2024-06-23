@@ -1,0 +1,9 @@
+Script started on 2024-06-23 11:47:25+03:00 [TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="140" LINES="48"]
+elos@konttitunkki:~/full-stack-open/part-12/script-answers$ docker start -i e45
+root@e45228c7a2da:/# vim /usr/src/app/index.js 
+root@e45228c7a2da:/# 
+exit
+elos@konttitunkki:~/full-stack-open/part-12/script-answers$ 
+exit
+
+Script done on 2024-06-23 11:48:05+03:00 [COMMAND_EXIT_CODE="0"]

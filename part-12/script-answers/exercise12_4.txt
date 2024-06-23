@@ -1,0 +1,67 @@
+Script started on 2024-06-23 11:49:25+03:00 [TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="140" LINES="48"]
+elos@konttitunkki:~/full-stack-open/part-12/script-answers$ docker start -i e45
+root@e45228c7a2da:/# curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+bash: curl: command not found
+root@e45228c7a2da:/# apt install curl
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following additional packages will be installed:
+  ca-certificates krb5-locales libbrotli1 libcurl4t64 libgssapi-krb5-2 libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0 libldap-common
+  libldap2 libnghttp2-14 libpsl5t64 librtmp1 libsasl2-2 libsasl2-modules libsasl2-modules-db libssh-4 openssl publicsuffix
+Suggested packages:
+  krb5-doc krb5-user libsasl2-modules-gssapi-mit | libsasl2-modules-gssapi-heimdal libsasl2-modules-ldap libsasl2-modules-otp
+  libsasl2-modules-sql
+The following NEW packages will be installed:
+  ca-certificates curl krb5-locales libbrotli1 libcurl4t64 libgssapi-krb5-2 libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0
+  libldap-common libldap2 libnghttp2-14 libpsl5t64 librtmp1 libsasl2-2 libsasl2-modules libsasl2-modules-db libssh-4 openssl publicsuffix
+0 upgraded, 21 newly installed, 0 to remove and 0 not upgraded.
+Need to get 3563 kB of archives.
+After this operation, 9197 kB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 openssl amd64 3.0.13-0ubuntu3.1 [1003 kB]
+Get:2 http://archive.ubuntu.com/ubuntu noble/main amd64 ca-certificates all 20240203 [159 kB]
+
+...
+SNIP
+...
+
+done.
+root@e45228c7a2da:/# curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 16555  100 16555    0     0   133k      0 --:--:-- --:--:-- --:--:--  133k
+=> Downloading nvm as script to '/root/.nvm'
+
+=> Appending nvm source string to /root/.bashrc
+=> Appending bash_completion source string to /root/.bashrc
+=> Close and reopen your terminal to start using nvm or run the following to use it now:
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+root@e45228c7a2da:/# source ~/.bash
+.bash_history  .bashrc        
+root@e45228c7a2da:/# source ~/.bash
+.bash_history  .bashrc        
+root@e45228c7a2da:/# source ~/.bashrc 
+root@e45228c7a2da:/# nvm install 22
+Downloading and installing node v22.3.0...
+Downloading https://nodejs.org/dist/v22.3.0/node-v22.3.0-linux-x64.tar.gz...
+##################################################################################################################################### 100.0%
+Computing checksum with sha256sum
+Checksums matched!
+Now using node v22.3.0 (npm v10.8.1)
+Creating default alias: default -> 22 (-> v22.3.0)
+root@e45228c7a2da:/# node -v
+v22.3.0
+root@e45228c7a2da:/# npm -v
+10.8.1
+root@e45228c7a2da:/# node /usr/src/app/index.js 
+Hello World
+root@e45228c7a2da:/# exit
+exit
+elos@konttitunkki:~/full-stack-open/part-12/script-answers$ exit
+exit
+
+Script done on 2024-06-23 11:54:56+03:00 [COMMAND_EXIT_CODE="0"]
