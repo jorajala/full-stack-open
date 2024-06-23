@@ -1,0 +1,43 @@
+services:
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: asdf
+      MONGO_INITDB_DATABASE: bloglist
+    volumes:
+      - ./backend/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - ./backend/mongo_data:/data/db
+
+  backend:
+    image: bloglist-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend/:/usr/src/app
+    container_name: bloglist-backend
+    depends_on:
+      - mongo
+
+  frontend:
+    image: bloglist-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend/:/usr/src/app
+    container_name: bloglist-frontend
+
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    container_name: reverse-proxy
+    depends_on:
+      - frontend
+      - backend
