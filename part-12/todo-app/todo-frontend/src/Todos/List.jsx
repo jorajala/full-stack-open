@@ -1,8 +1,6 @@
 import Todo from "./Todo.jsx";
 
 const TodoList = ({ todos, deleteTodo, completeTodo }) => {
-  console.log("todolist", todos);
-
   return (
     <div>
       {todos.map((t) => {

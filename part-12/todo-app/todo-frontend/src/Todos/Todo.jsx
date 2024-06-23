@@ -26,8 +26,6 @@ const Todo = ({ todo, deleteTodo, completeTodo }) => {
     </>
   );
 
-  console.log("todo", todo);
-
   return (
     <div
       style={{

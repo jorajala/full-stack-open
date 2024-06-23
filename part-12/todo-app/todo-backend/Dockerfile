@@ -4,10 +4,12 @@ WORKDIR /usr/src/app
 
 COPY --chown=node:node . .
 
-RUN npm ci --omit=dev
+RUN npm ci --only=production
 
 ENV DEBUG=todo-backend:*
 
+ENV NODE_ENV production
+
 USER node
 
-CMD npm start
+CMD ["node", "./bin/www"]

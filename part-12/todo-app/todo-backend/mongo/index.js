@@ -8,7 +8,6 @@ if (MONGO_URL && !mongoose.connection.readyState)
   mongoose.connect(MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 5000,
   });
 
 module.exports = {
