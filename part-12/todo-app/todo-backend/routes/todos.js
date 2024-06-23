@@ -46,7 +46,6 @@ singleRouter.get("/", async (req, res) => {
 
 /* PUT todo. */
 singleRouter.put("/", async (req, res) => {
-  console.log("req", req);
   Todo.findByIdAndUpdate(
     req.todo.id,
     { text: req.body.text, done: req.body.done },
