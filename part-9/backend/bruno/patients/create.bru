@@ -1,0 +1,21 @@
+meta {
+  name: create
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3001/api/patients
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Rowsdower",
+    "occupation": "Cultist",
+    "ssn": "666",
+    "dateOfBirth": "1918-11-11",
+    "gender": "other"
+  }
+}
