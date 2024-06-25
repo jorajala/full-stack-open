@@ -1,0 +1,18 @@
+meta {
+  name: invalid-array
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:3003/exercises
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "daily_exercises": [1, 0, 2, 0, 3, false, 2.5],
+    "target": 7
+  }
+}

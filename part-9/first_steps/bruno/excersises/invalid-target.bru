@@ -1,0 +1,18 @@
+meta {
+  name: invalid-target
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3003/exercises
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "daily_exercises": [1, 0, 2, 0, 3, 0, 2.5],
+    "target": "welp"
+  }
+}
