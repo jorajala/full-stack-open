@@ -1,12 +1,15 @@
-import { Courses } from "../types";
+import { CoursePart } from "../types";
+import Part from "./Part";
 
-const Content = (courses: Courses): JSX.Element => {
+const Content = ({
+  courseParts,
+}: {
+  courseParts: CoursePart[];
+}): JSX.Element => {
   return (
     <div>
-      {courses.courses.map(({ name, exerciseCount }) => (
-        <p>
-          {name}, {exerciseCount}
-        </p>
+      {courseParts.map((coursePart, index) => (
+        <Part key={index} coursePart={coursePart} />
       ))}
     </div>
   );
