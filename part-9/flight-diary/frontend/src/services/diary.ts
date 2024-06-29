@@ -1,20 +1,16 @@
 import { DiaryEntry } from "../types";
-import axios from "axios";
 
-const baseUrl = "/api/diaries";
+const baseUrl = "http://localhost:3000/api/diaries";
 
-// function getAll(): Promise<DiaryEntry[]> {
-//   const request = axios.get(baseUrl);
-//   return request
-//     .then((response) => response.data)
-//     .then((data: DiaryEntry[]) => data);
-// }
-
-function getAll(): DiaryEntry[] {
-  let asdf = fetch(baseUrl)
-    .then((response) => response.json)
-    .then((data) => data)
-    .catch();
+function getAll(): Promise<DiaryEntry[]> {
+  return fetch(baseUrl)
+    .then((response) => response.json())
+    .then((data: DiaryEntry[]) => data)
+    .catch((e) => {
+      console.error("getAll", e);
+      let asdf: DiaryEntry[] = [];
+      return asdf;
+    });
 }
 
 export default { getAll };

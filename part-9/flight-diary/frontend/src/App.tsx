@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
 import { DiaryEntry } from "./types";
-import "./App.css";
 import Diary from "./components/Diary";
 import diaryService from "./services/diary";
 
 function App() {
-  const [diaries, setDiaries] = useState<DiaryEntry[]>();
+  const [diary, setDiary] = useState<DiaryEntry[]>([]);
 
   useEffect(() => {
-    setDiaries(diaryService.getAll());
+    diaryService.getAll().then((diary: DiaryEntry[]) => setDiary(diary));
   }, []);
 
   return (
     <div>
-      <Diary />
+      <Diary diary={diary} />
     </div>
   );
 }
