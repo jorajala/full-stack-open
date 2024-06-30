@@ -5,8 +5,8 @@ const Diary = ({ diary }: { diary: DiaryEntry[] }) => {
   return (
     <div>
       <h2>Diary entries</h2>
-      {diary.map((entry) => (
-        <DiaryRow entry={entry} />
+      {diary.map((entry, index) => (
+        <DiaryRow key={index} entry={entry} />
       ))}
     </div>
   );
